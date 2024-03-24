@@ -4,11 +4,11 @@ import {
    OutputFindProductDTO,
 } from "./find.product.dto";
 
-export default class FindCustomerUseCase {
+export default class FindProductUseCase {
   private productRepository: ProductRepositoryInterface;
 
-  constructor(customerRepository: ProductRepositoryInterface) {
-    this.productRepository = customerRepository;
+  constructor(productRepository: ProductRepositoryInterface) {
+    this.productRepository = productRepository;
   }
 
   async execute(input: InputFindProductDTO): Promise<OutputFindProductDTO> {
