@@ -1,7 +1,7 @@
 import { Sequelize } from "sequelize-typescript";
 import ProductModel from "../../../infrastructure/product/repository/sequelize/product.model";
 import ProductRepository from "../../../infrastructure/product/repository/sequelize/product.repository";
-import ListProductUseCase from "./list.product.usecase";
+import UpdateProductUseCase from "./update.product.usecase";
 import ProductFactory from "../../../domain/product/factory/product.factory";
 
 describe("Test find product use case", () => {
@@ -23,39 +23,26 @@ describe("Test find product use case", () => {
         await sequelize.close();
     });
 
-    it("should list products", async () => {
+    it("should update products", async () => {
         const procutRepository = new ProductRepository();
-        const usecase = new ListProductUseCase(procutRepository);
+        const usecase = new UpdateProductUseCase(procutRepository);
 
-        const productA = ProductFactory.create('a',
-            "Product A",
+        const productB = ProductFactory.create(
+            'b',
+            "Product B",
             100
         );
-        const productB = ProductFactory.create('b',
-            "Product B",
-            200
-        );
 
-        await procutRepository.create(productA);
         await procutRepository.create(productB);
 
-        const output = {
-            products: [
-                {
-                    id: productA.id,
-                    name: "Product A",
-                    price: 100
-                },
-                {
-                    id: productB.id,
-                    name: "Product B",
-                    price: 400
-                }
-            ]
+        const input = {
+            id: productB.id,
+            name: 'Product B updated',
+            price: 300
         };
 
-        const result = await usecase.execute();
+        const result = await usecase.execute(input);
 
-        expect(result).toEqual(output);
+        expect(result).toEqual(input);
     });
 });
